@@ -43,8 +43,13 @@ extension=php_pdo_mysql.dll
     
     $requete = $bdd->query('SELECT prenom, nom, serie_preferee, metier
                             FROM users
-                            LEFT JOIN jobs
+                            INNER JOIN jobs
                             ON users.id = jobs.id_user');
+
+    /* $requete = $bdd->query('SELECT prenom, nom, u.serie_preferee AS serie_preferee, j.serie_preferee AS metier
+                            FROM users AS u
+                            INNER JOIN jobs AS j
+                            ON u.id = j.id_user'); */
          
     echo'<table border>
             <tr>

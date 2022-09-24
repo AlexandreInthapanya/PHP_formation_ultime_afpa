@@ -28,30 +28,28 @@ extension=php_pdo_mysql.dll
     } catch(Exception $e) {
         die('Erreur : '. $e->getMessage());
     }
-
-    // JOINTURES INTERNE
-    // WHERE : moins en moins choisi, moins clair
-    // JOIN : plus en plus choisir, plus clair
     
-    // AJOUTER UN METIER
-    /* $requete = $bdd->exec('INSERT INTO jobs(id_user, metier) VALUES(4, "PDG")'); */
+    // AJOUTER UN UTILISATEUR
+    /* $requete = $bdd->exec('INSERT INTO users(prenom, nom, serie_preferee) 
+                            VALUES("Mark", "Zuckerberg", "Koh-Lanta")'); */
+
+    //MODIFIER UN UTILISATEUR
+    /* $requete = $bdd->exec('UPDATE users SET serie_preferee = "Le rouge et le noir" WHERE prenom = "Alain"'); */
+
+    // SUPPRIMER UN UTILISATEUR
+    $requete = $bdd->exec('DELETE FROM users WHERE prenom = "Mark"');
 
     // LIRE DES INFORMATIONS
-    /* $requete = $bdd->query('SELECT prenom, nom, serie_preferee, metier
-                            FROM users, jobs
-                            WHERE users.id = jobs.id_user'); */
-    
-    $requete = $bdd->query('SELECT prenom, nom, serie_preferee, metier
+    $requete = $bdd->query('SELECT *
                             FROM users
-                            LEFT JOIN jobs
-                            ON users.id = jobs.id_user');
+                            /* WHERE prenom = "Nicolas" && nom = "Dupont" 
+                            ORDER BY id DESC LIMIT 1, 2 */');
          
     echo'<table border>
             <tr>
                 <th>Prénom</th>
                 <th>Nom</th>
                 <th>Série préférée</th>
-                <th>Métier</th>
             </tr>';
     
     while($donnees = $requete->fetch()){ 
@@ -60,7 +58,6 @@ extension=php_pdo_mysql.dll
                 <td>'.$donnees['prenom'].'</td>
                 <td>'.$donnees['nom'].'</td>
                 <td>'.$donnees['serie_preferee'].'</td>
-                <td>'.$donnees['metier'].'</td>
             </tr>';
     }
 
