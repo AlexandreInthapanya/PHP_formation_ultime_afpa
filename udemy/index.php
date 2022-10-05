@@ -1,6 +1,7 @@
 <?php
 // PROJET 4 : Un espace membre
 // INSCRIPTION
+session_start();
 
 require('src/connection.php');
 
@@ -26,6 +27,7 @@ if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['passwor
     while($email_verification = $req->fetch()){
         if($email_verification['numberEmail'] != 0){
             header('location: index.php?error=1&email=1');
+            exit();
         }
     }
 
@@ -41,7 +43,7 @@ if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['passwor
     $req->execute(array($pseudo, $email, $password, $secret));
 
     header('location: index.php/?success=1');
-
+    exit();
 
 }
 
@@ -62,13 +64,16 @@ if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['passwor
     </header>
 
     <div class="container">
-        <p id="info">Bienvenue sur mon site, pour en voir plus, inscrivez-vous. Sinon, <a href="connection.php">Connectez-vous</a></p>
-    
-        <!-- PSEUDO
-            EMAIL
-            MOT DE PASSE
-            MOT DE PASSE A CONFIRMER -->
 
+        <?php
+            if(!isset($_SESSION['connect'])){ ?>
+                <p id="info">Bienvenue sur mon site, pour en voir plus, inscrivez-vous. Sinon, <a href="connection.php">Connectez-vous</a></p>
+            
+                <!-- PSEUDO
+                    EMAIL
+                    MOT DE PASSE
+                    MOT DE PASSE A CONFIRMER -->
+        
             <?php 
 
             if(isset($_GET['error'])){
@@ -83,7 +88,7 @@ if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['passwor
             else if(isset($_GET['success'])){
                 echo '<p id="success">Inscription prise correctement en compte.</p>';
             }
-  
+    
             ?> 
 
             <div id="form">
@@ -112,6 +117,16 @@ if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['passwor
         
                 </form>
             </div>
+        <?php }  else { ?>
+
+        <p id="info">
+            Bonjour <?= $_SESSION['pseudo'] ?><br>
+            <a href="disconnection.php">Déconnexion</a>
+        </p>
+            
+        <?php } ?>
+        <!-- php echo ; = = -->
+
     </div>
 
 </body>
